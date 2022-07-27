@@ -25,11 +25,18 @@ fruits_selected = streamlit.multiselect("Pick some fruits:", list(my_fruit_list.
 #filtering the table to only show fruits selected 
 fruits_to_show = my_fruit_list.loc[fruits_selected]
 
+#display the table on the page
+streamlit.dataframe(fruits_to_show)
+
 #New Section to display fruityvice api response
 streamlit.header('Fruityvice Fruit Advice!')
 
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-streamlit.text(fruityvice_response.json())
 
-#display the table on the page
-streamlit.dataframe(fruits_to_show)
+## REMOVED ##streamlit.text(fruityvice_response.json())
+
+#Reformat the raw JSON data shown by the response in JSON script to normalized
+fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+
+#display the normalized data into a data frame 
+streamlit.dataframe(fruityvice_normalized)
